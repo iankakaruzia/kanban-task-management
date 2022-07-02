@@ -13,8 +13,46 @@ datasource db {
 }
 
 model Board {
-  id          Int @id @default(autoincrement())
-  name        String
+  id   Int    @id @default(autoincrement())
+  name String
+
+  columns Column[]
 
   @@map("boards")
+}
+
+model Column {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  boardId Int
+  board   Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  tasks Task[]
+
+  @@map("columns")
+}
+
+model Task {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+
+  columnId Int
+  column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
+
+  subtasks Subtask[]
+
+  @@map("tasks")
+}
+
+model Subtask {
+  id          Int     @id @default(autoincrement())
+  name        String
+  isCompleted Boolean @default(false)
+
+  taskId Int
+  task   Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@map("subtasks")
 }
