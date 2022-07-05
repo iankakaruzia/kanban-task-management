@@ -4,6 +4,10 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      backgroundImage: {
+        'logo-dark': 'url(/assets/logo-dark.svg)',
+        'logo-light': 'url(/assets/logo-light.svg)'
+      },
       fontFamily: {
         sans: "'Plus Jakarta Sans', sans-serif"
       },
