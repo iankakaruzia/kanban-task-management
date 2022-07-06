@@ -3,16 +3,24 @@ import { Menu, Transition } from '@headlessui/react'
 import { MobileBoardsMenu } from 'components/MobileBoardsMenu'
 import { Fragment } from 'react'
 import { classNames } from 'utils/styles/class-names'
+import { useSidebar } from 'hooks'
 
 export function Header() {
+  const { isOpen } = useSidebar()
+
   return (
     <header className='flex p-4 pr-2 md:p-0 md:pl-6 md:pr-4 items-center bg-white dark:bg-gray-500 md:border-b border-gray-200 dark:border-gray-400'>
-      <div className='mr-4 md:mr-0 flex items-center md:self-stretch md:border-r border-gray-200 dark:border-gray-400'>
+      <div
+        className={classNames(
+          'mr-4 md:mr-0 flex items-center md:self-stretch md:border-r border-gray-200 dark:border-gray-400 transition-all',
+          isOpen ? 'md:w-[235px] lg:w-[276px]' : 'md:w-[177px] lg:w-[186px]'
+        )}
+      >
         <div className='md:hidden'>
           <Image src='/assets/logo-mobile.svg' alt='' width={24} height={25} />
         </div>
 
-        <div className='hidden md:block bg-logo-dark dark:bg-logo-light h-[25.22px] w-[152.53px] md:mr-6 lg:mr-28'></div>
+        <div className='hidden md:block bg-logo-dark dark:bg-logo-light h-[25.22px] w-[152.53px]'></div>
       </div>
 
       <div className='flex-1 md:pl-6'>

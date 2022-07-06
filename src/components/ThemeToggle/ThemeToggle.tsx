@@ -20,7 +20,7 @@ export function ThemeToggle() {
       <Switch
         checked={isDark()}
         onChange={() => setTheme(isDark() ? 'light' : 'dark')}
-        className='bg-purple-500 relative inline-flex h-5 w-10 items-center mx-6 rounded-full'
+        className='bg-purple-500 hover:bg-purple-300 transition-colors relative inline-flex h-5 w-10 items-center mx-6 rounded-full'
       >
         <span className='sr-only'>Enable dark mode</span>
         <span

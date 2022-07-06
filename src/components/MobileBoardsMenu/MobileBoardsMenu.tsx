@@ -18,7 +18,7 @@ export function MobileBoardsMenu() {
     setIsOpen(true)
   }
 
-  function updateSelecteProject(project: string) {
+  function updateSelectedProject(project: string) {
     setSelectedProject(project)
     closeModal()
   }
@@ -89,7 +89,7 @@ export function MobileBoardsMenu() {
                               project === selectedProject &&
                                 'bg-purple-500 rounded-tr-full rounded-br-full'
                             )}
-                            onClick={() => updateSelecteProject(project)}
+                            onClick={() => updateSelectedProject(project)}
                           >
                             <svg
                               xmlns='http://www.w3.org/2000/svg'
