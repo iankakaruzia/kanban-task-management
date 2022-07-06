@@ -1,8 +1,10 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { ThemeToggle } from 'components/ThemeToggle'
+import NiceModal from '@ebay/nice-modal-react'
 import Image from 'next/image'
 import { Fragment, useState } from 'react'
 import { classNames } from 'utils/styles/class-names'
+import { AddBoardModal } from 'components/AddBoardForm'
 
 const PROJECTS = ['Platform Launch', 'Marketing Plan', 'Roadmap']
 
@@ -16,6 +18,11 @@ export function MobileBoardsMenu() {
 
   function openModal() {
     setIsOpen(true)
+  }
+
+  function showAddBoardFormModal() {
+    closeModal()
+    NiceModal.show('add-board-form-modal')
   }
 
   function updateSelectedProject(project: string) {
@@ -58,7 +65,7 @@ export function MobileBoardsMenu() {
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <div className='fixed inset-0 bg-black bg-opacity-25' />
+            <div className='fixed inset-0 bg-black bg-opacity-50' />
           </Transition.Child>
 
           <div className='fixed inset-0 overflow-y-auto'>
@@ -74,7 +81,7 @@ export function MobileBoardsMenu() {
               >
                 <Dialog.Panel className='w-full max-w-xs transform overflow-hidden rounded-2xl bg-white dark:bg-gray-500 py-4 text-left align-middle shadow-xl transition-all'>
                   <Dialog.Title
-                    as='h3'
+                    as='h4'
                     className='font-bold text-heading-sm text-gray-300 ml-6 mb-5'
                   >
                     ALL BOARDS ({PROJECTS.length})
@@ -119,7 +126,10 @@ export function MobileBoardsMenu() {
                         </li>
                       ))}
                       <li>
-                        <button className='mr-6 flex items-center pl-6 pr-2 py-[14px] text-heading-md'>
+                        <button
+                          onClick={showAddBoardFormModal}
+                          className='mr-6 flex items-center pl-6 pr-2 py-[14px] text-heading-md'
+                        >
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
                             width='16'
@@ -147,6 +157,7 @@ export function MobileBoardsMenu() {
           </div>
         </Dialog>
       </Transition>
+      <AddBoardModal id='add-board-form-modal' />
     </>
   )
 }

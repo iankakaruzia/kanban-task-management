@@ -4,27 +4,30 @@ import Head from 'next/head'
 import { ThemeProvider } from 'next-themes'
 import { withTRPC } from '@trpc/next'
 import superjson from 'superjson'
+import NiceModal from '@ebay/nice-modal-react'
 import { AppRouter } from 'server/routers'
 import { SidebarProvider } from 'hooks'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute='class'>
-      <SidebarProvider>
-        <Head>
-          <title>Kanban Task Management</title>
-          <link
-            rel='shortcut icon'
-            href='/assets/favicon-32x32.png'
-            type='image/png'
-          />
-          <meta
-            name='description'
-            content='Have full control over your tasks and projects.'
-          />
-        </Head>
-        <Component {...pageProps} />
-      </SidebarProvider>
+      <NiceModal.Provider>
+        <SidebarProvider>
+          <Head>
+            <title>Kanban Task Management</title>
+            <link
+              rel='shortcut icon'
+              href='/assets/favicon-32x32.png'
+              type='image/png'
+            />
+            <meta
+              name='description'
+              content='Have full control over your tasks and projects.'
+            />
+          </Head>
+          <Component {...pageProps} />
+        </SidebarProvider>
+      </NiceModal.Provider>
     </ThemeProvider>
   )
 }

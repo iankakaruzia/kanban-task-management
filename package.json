@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^1.6.5",
     "@prisma/client": "4.0.0",
+    "@tailwindcss/forms": "^0.5.2",
     "@trpc/client": "^9.25.3",
     "@trpc/next": "^9.25.3",
     "@trpc/react": "^9.25.3",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
+    "@ebay/nice-modal-react": "^1.2.6",
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
