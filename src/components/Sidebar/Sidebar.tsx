@@ -33,14 +33,15 @@ export function Sidebar() {
             <h3 className='font-bold text-heading-sm text-gray-300 ml-6 mb-5'>
               ALL BOARDS ({PROJECTS.length})
             </h3>
-            <ul>
+            <ul className='pr-5 lg:pr-6'>
               {PROJECTS.map((project) => (
                 <li key={project}>
                   <button
                     className={classNames(
-                      'mr-6 flex items-center px-6 py-[14px] text-heading-md',
-                      project === selectedProject &&
-                        'bg-purple-500 rounded-tr-full rounded-br-full'
+                      'w-full flex items-center px-6 py-[14px] rounded-tr-[100px] rounded-br-[100px] text-heading-md group transition-all',
+                      project === selectedProject
+                        ? 'bg-purple-500 hover:bg-opacity-80'
+                        : 'hover:bg-purple-500 hover:bg-opacity-10 hover:dark:bg-white'
                     )}
                     onClick={() => updateSelectedProject(project)}
                   >
@@ -50,16 +51,20 @@ export function Sidebar() {
                       height='16'
                     >
                       <path
-                        fill={project === selectedProject ? '#fff' : '#828FA3'}
+                        className={classNames(
+                          project === selectedProject
+                            ? 'fill-white'
+                            : 'fill-gray-300 group-hover:fill-purple-500'
+                        )}
                         d='M0 2.889A2.889 2.889 0 012.889 0H13.11A2.889 2.889 0 0116 2.889V13.11A2.888 2.888 0 0113.111 16H2.89A2.889 2.889 0 010 13.111V2.89zm1.333 5.555v4.667c0 .859.697 1.556 1.556 1.556h6.889V8.444H1.333zm8.445-1.333V1.333h-6.89A1.556 1.556 0 001.334 2.89v4.22h8.445zm4.889-1.333H11.11v4.444h3.556V5.778zm0 5.778H11.11v3.11h2a1.556 1.556 0 001.556-1.555v-1.555zm0-7.112V2.89a1.555 1.555 0 00-1.556-1.556h-2v3.111h3.556z'
                       ></path>
                     </svg>
                     <span
                       className={classNames(
-                        'ml-3',
+                        'ml-3 transition-colors',
                         project === selectedProject
                           ? 'text-white'
-                          : 'text-gray-300'
+                          : 'text-gray-300 group-hover:text-purple-500'
                       )}
                     >
                       {project}
@@ -68,7 +73,7 @@ export function Sidebar() {
                 </li>
               ))}
               <li>
-                <button className='mr-6 flex items-center pl-6 pr-2 py-[14px] text-heading-md'>
+                <button className='mr-6 flex w-full rounded-tr-[100px] rounded-br-[100px] items-center pl-6 pr-2 py-[14px] text-heading-md group hover:bg-purple-500 hover:bg-opacity-10 hover:dark:bg-white'>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     width='16'
@@ -87,19 +92,20 @@ export function Sidebar() {
             </ul>
           </div>
 
-          <div className='px-3 pb-8'>
-            <ThemeToggle />
+          <div className='pb-8 pr-3 lg:pr-6'>
+            <ThemeToggle className='ml-3 lg:ml-6' />
             <button
-              className='mt-4 flex items-center px-3 py-[14px]'
+              className='mt-4 w-full flex rounded-tr-[100px] group rounded-br-[100px] items-center px-3 py-[14px] transition-colors hover:bg-purple-500 hover:bg-opacity-10 hover:dark:bg-white'
               onClick={toggle}
+              aria-label='Hide sidebar'
             >
-              <Image
-                src='/assets/icon-hide-sidebar.svg'
-                alt=''
-                width={18}
-                height={16}
-              />
-              <span className='ml-[10px] text-gray-300 text-heading-md'>
+              <svg xmlns='http://www.w3.org/2000/svg' width='18' height='16'>
+                <path
+                  className='fill-gray-300 group-hover:fill-purple-500'
+                  d='M8.522 11.223a4.252 4.252 0 01-3.654-5.22l3.654 5.22zM9 12.25A8.685 8.685 0 011.5 8a8.612 8.612 0 012.76-2.864l-.86-1.23A10.112 10.112 0 00.208 7.238a1.5 1.5 0 000 1.524A10.187 10.187 0 009 13.75c.414 0 .828-.025 1.239-.074l-1-1.43A8.88 8.88 0 019 12.25zm8.792-3.488a10.14 10.14 0 01-4.486 4.046l1.504 2.148a.375.375 0 01-.092.523l-.648.453a.375.375 0 01-.523-.092L3.19 1.044A.375.375 0 013.282.52L3.93.068a.375.375 0 01.523.092l1.735 2.479A10.308 10.308 0 019 2.25c3.746 0 7.031 2 8.792 4.988a1.5 1.5 0 010 1.524zM16.5 8a8.674 8.674 0 00-6.755-4.219A1.75 1.75 0 1012.75 5v-.001a4.25 4.25 0 01-1.154 5.366l.834 1.192A8.641 8.641 0 0016.5 8z'
+                ></path>
+              </svg>
+              <span className='ml-[10px] text-gray-300 group-hover:text-purple-500 text-heading-md'>
                 Hide Sidebar
               </span>
             </button>

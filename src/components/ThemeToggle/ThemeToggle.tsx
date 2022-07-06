@@ -2,8 +2,13 @@ import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
 import { Switch } from '@headlessui/react'
 import Image from 'next/image'
+import { classNames } from 'utils/styles/class-names'
 
-export function ThemeToggle() {
+type ThemeToggleProps = {
+  className?: string
+}
+
+export function ThemeToggle({ className }: ThemeToggleProps) {
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
 
@@ -15,7 +20,12 @@ export function ThemeToggle() {
   }
 
   return (
-    <div className='flex items-center justify-center bg-gray-100 dark:bg-gray-600 p-[14px] rounded-md'>
+    <div
+      className={classNames(
+        className && className,
+        'flex items-center justify-center bg-gray-100 dark:bg-gray-600 p-[14px] rounded-md'
+      )}
+    >
       <Image src='/assets/icon-light-theme.svg' alt='' width={18} height={18} />
       <Switch
         checked={isDark()}
