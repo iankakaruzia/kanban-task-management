@@ -1,10 +1,12 @@
 import { Modal } from 'components/Modal'
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { FormEvent, useState } from 'react'
+import toast from 'react-hot-toast'
 import { addBoardFormValidation } from 'utils/validations/form-validations'
 import { Input } from 'components/Input'
 import { DynamicItems } from 'components/DynamicItems'
 import { Button } from 'components/Button'
+import { trpc } from 'lib/trpc'
 
 export const AddBoardModal = NiceModal.create(() => {
   const [name, setName] = useState('')
@@ -13,6 +15,14 @@ export const AddBoardModal = NiceModal.create(() => {
     [key: string]: string | Record<number, string>
   }>({})
   const modal = useModal()
+  const mutation = trpc.useMutation('board.create-board')
+
+  function onClose() {
+    setName('')
+    setColumns([])
+    setErrors({})
+    modal.hide()
+  }
 
   function onSubmit(event: FormEvent) {
     event.preventDefault()
@@ -29,14 +39,15 @@ export const AddBoardModal = NiceModal.create(() => {
 
     setErrors({})
 
-    console.log({ name, columns })
-  }
-
-  function onClose() {
-    setName('')
-    setColumns([])
-    setErrors({})
-    modal.hide()
+    mutation.mutate(
+      { name, columns },
+      {
+        onSuccess: () => {
+          toast.success('Board created successfully')
+          onClose()
+        }
+      }
+    )
   }
 
   return (
@@ -59,7 +70,7 @@ export const AddBoardModal = NiceModal.create(() => {
           errors={errors.columns}
         />
 
-        <Button type='submit' className='mt-5'>
+        <Button type='submit' className='mt-5' disabled={mutation.isLoading}>
           Create New Board
         </Button>
       </form>

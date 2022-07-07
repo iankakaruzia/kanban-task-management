@@ -5,6 +5,7 @@ import { ThemeProvider } from 'next-themes'
 import { withTRPC } from '@trpc/next'
 import superjson from 'superjson'
 import NiceModal from '@ebay/nice-modal-react'
+import { Toaster } from 'react-hot-toast'
 import { AppRouter } from 'server/routers'
 import { SidebarProvider } from 'hooks'
 
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider attribute='class'>
       <NiceModal.Provider>
         <SidebarProvider>
+          <Toaster position='top-right' />
           <Head>
             <title>Kanban Task Management</title>
             <link
