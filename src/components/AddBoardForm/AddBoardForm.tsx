@@ -4,7 +4,7 @@ import { FormEvent, useState } from 'react'
 import { addBoardFormValidation } from 'utils/validations/form-validations'
 import { Input } from 'components/Input'
 import { DynamicItems } from 'components/DynamicItems'
-import { Button } from 'components/Button/Button'
+import { Button } from 'components/Button'
 
 export const AddBoardModal = NiceModal.create(() => {
   const [name, setName] = useState('')

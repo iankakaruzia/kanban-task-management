@@ -1,4 +1,4 @@
-import { Button } from 'components/Button/Button'
+import { Button } from 'components/Button'
 import { useState } from 'react'
 import { classNames } from 'utils/styles/class-names'
 
