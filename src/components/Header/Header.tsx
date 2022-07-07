@@ -9,11 +9,13 @@ export function Header() {
   const { isOpen } = useSidebar()
 
   return (
-    <header className='flex p-4 pr-2 md:p-0 md:pl-6 md:pr-4 items-center bg-white dark:bg-gray-500 md:border-b border-gray-200 dark:border-gray-400'>
+    <header className='flex py-4 md:p-0 items-center bg-white dark:bg-gray-500'>
       <div
         className={classNames(
-          'mr-4 md:mr-0 flex items-center md:self-stretch md:border-r border-gray-200 dark:border-gray-400 transition-all',
-          isOpen ? 'md:w-[235px] lg:w-[276px]' : 'md:w-[177px] lg:w-[186px]'
+          'mr-4 md:mr-0 pl-4 md:pl-6 flex items-center md:self-stretch md:border-r md:border-b transition-all',
+          isOpen
+            ? 'md:w-[260px] lg:w-[300px] border-transparent border-r-gray-200 dark:border-r-gray-400'
+            : 'md:w-[200px] lg:w-[210px] border-gray-200 dark:border-gray-400'
         )}
       >
         <div className='md:hidden'>
@@ -23,14 +25,14 @@ export function Header() {
         <div className='hidden md:block bg-logo-dark dark:bg-logo-light h-[25.22px] w-[152.53px]'></div>
       </div>
 
-      <div className='flex-1 md:pl-6'>
+      <div className='flex-1 md:pl-6 self-stretch flex items-center md:border-b border-gray-200 dark:border-gray-400'>
         <MobileBoardsMenu />
         <h3 className='hidden md:block text-xl leading-[25px] lg:text-heading-xl'>
           Platform Launch
         </h3>
       </div>
 
-      <div className='flex items-center md:py-4 lg:py-5'>
+      <div className='flex items-center pr-2 md:pr-4 md:py-4 lg:py-5 md:border-b border-gray-200 dark:border-gray-400'>
         <button
           className='mr-2 md:mr-4 bg-purple-500 hover:bg-purple-300 h-8 md:h-auto w-12 md:w-auto md:px-6 md:py-[14px] rounded-3xl transition-colors'
           aria-label='Add new task'
