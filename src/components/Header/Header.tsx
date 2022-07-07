@@ -51,7 +51,7 @@ export function Header() {
         </button>
 
         <Menu as='div' className='relative inline-block text-left'>
-          <Menu.Button className='p-2 rounded-full'>
+          <Menu.Button className='p-2 rounded-full' aria-label='Board options'>
             <div className='w-[3.69px] md:w-[4.62px] h-4 md:h-5 relative'>
               <Image
                 src='/assets/icon-vertical-ellipsis.svg'
