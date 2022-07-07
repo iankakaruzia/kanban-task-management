@@ -6,16 +6,16 @@ import { Fragment, useState } from 'react'
 import NiceModal from '@ebay/nice-modal-react'
 import { classNames } from 'utils/styles/class-names'
 import { AddBoardModal } from 'components/AddBoardForm'
-
-const PROJECTS = ['Platform Launch', 'Marketing Plan', 'Roadmap']
+import { trpc } from 'lib/trpc'
 
 export function Sidebar() {
   const { isOpen, toggle } = useSidebar()
+  const { data } = trpc.useQuery(['board.get-boards'])
 
-  const [selectedProject, setSelectedProject] = useState(PROJECTS[0])
+  const [selectedProject, setSelectedProject] = useState(data?.boards[0]?.id)
 
-  function updateSelectedProject(project: string) {
-    setSelectedProject(project)
+  function updateSelectedProject(id: number) {
+    setSelectedProject(id)
   }
 
   function showAddBoardFormModal() {
@@ -37,19 +37,19 @@ export function Sidebar() {
         <aside className='hidden md:flex flex-col justify-between flex-1 bg-white dark:bg-gray-500 max-w-[260px] lg:max-w-[300px] transition-all border-r border-gray-200 dark:border-gray-400'>
           <div className='mt-8'>
             <h3 className='font-bold text-heading-sm text-gray-300 ml-6 mb-5'>
-              ALL BOARDS ({PROJECTS.length})
+              ALL BOARDS ({data?.boards.length ?? 0})
             </h3>
             <ul className='pr-5 lg:pr-6'>
-              {PROJECTS.map((project) => (
-                <li key={project}>
+              {data?.boards.map((project) => (
+                <li key={project.id}>
                   <button
                     className={classNames(
                       'w-full flex items-center px-6 py-[14px] rounded-tr-[100px] rounded-br-[100px] text-heading-md group transition-all',
-                      project === selectedProject
+                      project.id === selectedProject
                         ? 'bg-purple-500 hover:bg-opacity-80'
                         : 'hover:bg-purple-500 hover:bg-opacity-10 hover:dark:bg-white'
                     )}
-                    onClick={() => updateSelectedProject(project)}
+                    onClick={() => updateSelectedProject(project.id)}
                   >
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
@@ -58,7 +58,7 @@ export function Sidebar() {
                     >
                       <path
                         className={classNames(
-                          project === selectedProject
+                          project.id === selectedProject
                             ? 'fill-white'
                             : 'fill-gray-300 group-hover:fill-purple-500'
                         )}
@@ -68,12 +68,12 @@ export function Sidebar() {
                     <span
                       className={classNames(
                         'ml-3 transition-colors',
-                        project === selectedProject
+                        project.id === selectedProject
                           ? 'text-white'
                           : 'text-gray-300 group-hover:text-purple-500'
                       )}
                     >
-                      {project}
+                      {project.name}
                     </span>
                   </button>
                 </li>

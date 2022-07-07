@@ -15,7 +15,12 @@ export const AddBoardModal = NiceModal.create(() => {
     [key: string]: string | Record<number, string>
   }>({})
   const modal = useModal()
-  const mutation = trpc.useMutation('board.create-board')
+  const utils = trpc.useContext()
+  const mutation = trpc.useMutation('board.create-board', {
+    onSuccess: () => {
+      utils.invalidateQueries(['board.get-boards'])
+    }
+  })
 
   function onClose() {
     setName('')
