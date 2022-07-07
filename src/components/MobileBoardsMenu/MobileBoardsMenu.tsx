@@ -87,12 +87,12 @@ export function MobileBoardsMenu() {
                     ALL BOARDS ({PROJECTS.length})
                   </Dialog.Title>
                   <div className='mt-2'>
-                    <ul>
+                    <ul className='pr-6'>
                       {PROJECTS.map((project) => (
                         <li key={project}>
                           <button
                             className={classNames(
-                              'mr-6 flex items-center px-6 py-[14px] text-heading-md',
+                              'mr-6 flex items-center px-6 py-[14px] w-full text-heading-md',
                               project === selectedProject &&
                                 'bg-purple-500 rounded-tr-full rounded-br-full'
                             )}
@@ -128,7 +128,7 @@ export function MobileBoardsMenu() {
                       <li>
                         <button
                           onClick={showAddBoardFormModal}
-                          className='mr-6 flex items-center pl-6 pr-2 py-[14px] text-heading-md'
+                          className='mr-6 w-full flex items-center pl-6 pr-2 py-[14px] text-heading-md'
                         >
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
