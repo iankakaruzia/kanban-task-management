@@ -4,11 +4,14 @@ import { FormEvent, useState } from 'react'
 import { addBoardFormValidation } from 'utils/validations/form-validations'
 import { Input } from 'components/Input'
 import { DynamicItems } from 'components/DynamicItems'
+import { Button } from 'components/Button/Button'
 
 export const AddBoardModal = NiceModal.create(() => {
   const [name, setName] = useState('')
   const [columns, setColumns] = useState<string[]>([])
-  const [errors, setErrors] = useState<{ [key: string]: string }>({})
+  const [errors, setErrors] = useState<{
+    [key: string]: string | Record<number, string>
+  }>({})
   const modal = useModal()
 
   function onSubmit(event: FormEvent) {
@@ -29,12 +32,15 @@ export const AddBoardModal = NiceModal.create(() => {
     console.log({ name, columns })
   }
 
+  function onClose() {
+    setName('')
+    setColumns([])
+    setErrors({})
+    modal.hide()
+  }
+
   return (
-    <Modal
-      isOpen={modal.visible}
-      onClose={() => modal.hide()}
-      title='Add New Board'
-    >
+    <Modal isOpen={modal.visible} onClose={onClose} title='Add New Board'>
       <form onSubmit={onSubmit}>
         <Input
           label='Board Name'
@@ -42,7 +48,7 @@ export const AddBoardModal = NiceModal.create(() => {
           id='name'
           value={name}
           onChange={(e) => setName(e.target.value)}
-          error={errors.name}
+          error={errors.name as string}
         />
 
         <DynamicItems
@@ -50,14 +56,12 @@ export const AddBoardModal = NiceModal.create(() => {
           addMoreLabel='+ Add New Column'
           onChange={(items) => setColumns(items)}
           className='mt-6'
+          errors={errors.columns}
         />
 
-        <button
-          type='submit'
-          className='bg-purple-500 w-full text-white text-body-lg p-2 rounded-[20px] mt-5'
-        >
+        <Button type='submit' className='mt-5'>
           Create New Board
-        </button>
+        </Button>
       </form>
     </Modal>
   )

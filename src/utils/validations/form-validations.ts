@@ -20,7 +20,7 @@ export function addBoardFormValidation(values: AddBoardFormValues) {
   })
 
   const validated = schema.safeParse(values)
-  const errors: { [key: string]: string } = {}
+  const errors: { [key: string]: string | Record<number, string> } = {}
 
   if (validated.success) {
     return { isValid: true, errors }
@@ -32,8 +32,16 @@ export function addBoardFormValidation(values: AddBoardFormValues) {
     errors.name = formattedErrors.name._errors[0]
   }
 
-  if (formattedErrors.columns?._errors) {
-    errors.columns = formattedErrors.columns._errors[0]
+  if (formattedErrors.columns) {
+    Object.keys(formattedErrors.columns).forEach((key) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const columnErrors = formattedErrors.columns as any
+      if (key !== '_errors') {
+        errors.columns = Object.assign(errors.columns || {}, {
+          [key]: columnErrors[key]._errors[0]
+        })
+      }
+    })
   }
 
   return {

@@ -3,7 +3,9 @@ import { ThemeToggle } from 'components/ThemeToggle'
 import { useSidebar } from 'hooks'
 import Image from 'next/image'
 import { Fragment, useState } from 'react'
+import NiceModal from '@ebay/nice-modal-react'
 import { classNames } from 'utils/styles/class-names'
+import { AddBoardModal } from 'components/AddBoardForm'
 
 const PROJECTS = ['Platform Launch', 'Marketing Plan', 'Roadmap']
 
@@ -14,6 +16,10 @@ export function Sidebar() {
 
   function updateSelectedProject(project: string) {
     setSelectedProject(project)
+  }
+
+  function showAddBoardFormModal() {
+    NiceModal.show('add-board-form-modal')
   }
 
   return (
@@ -73,7 +79,10 @@ export function Sidebar() {
                 </li>
               ))}
               <li>
-                <button className='mr-6 flex w-full rounded-tr-[100px] rounded-br-[100px] items-center pl-6 pr-2 py-[14px] text-heading-md group hover:bg-purple-500 hover:bg-opacity-10 hover:dark:bg-white'>
+                <button
+                  onClick={showAddBoardFormModal}
+                  className='mr-6 flex w-full rounded-tr-[100px] rounded-br-[100px] items-center pl-6 pr-2 py-[14px] text-heading-md group hover:bg-purple-500 hover:bg-opacity-10 hover:dark:bg-white'
+                >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     width='16'
@@ -137,6 +146,7 @@ export function Sidebar() {
           </button>
         </Transition>
       )}
+      <AddBoardModal id='add-board-form-modal' />
     </>
   )
 }

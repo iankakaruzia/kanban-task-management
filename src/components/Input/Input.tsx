@@ -29,7 +29,7 @@ export function Input({
           type={type}
           {...props}
           className={classNames(
-            'w-full bg-transparent py-2 px-4 text-body-lg placeholder:text-[#00011225] placeholder:dark:text-[#FFFFFF25] rounded border-gray-300 border-opacity-25 focus:ring-gray-300 focus:border-none',
+            'w-full bg-transparent py-2 px-4 text-body-lg placeholder:text-[#00011225] placeholder:dark:text-[#FFFFFF25] rounded border-gray-300 border-opacity-25 focus:border-purple-500 focus:ring-0',
             error && 'border-red-500 pr-28'
           )}
         />
