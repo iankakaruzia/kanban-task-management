@@ -35,7 +35,7 @@ export function Header() {
 
       <div className='flex items-center pr-2 md:pr-4 md:py-4 lg:py-5 md:border-b border-gray-200 dark:border-gray-400'>
         <button
-          className='mr-2 md:mr-4 bg-purple-500 hover:bg-purple-300 h-8 md:h-auto w-12 md:w-auto md:px-6 md:py-[14px] rounded-3xl transition-colors disabled:opacity-25 hover:disabled:bg-purple-500 cursor-not-allowed'
+          className='mr-2 md:mr-4 bg-purple-500 hover:bg-purple-300 h-8 md:h-auto w-12 md:w-auto md:px-6 md:py-[14px] rounded-3xl transition-colors disabled:opacity-25 hover:disabled:bg-purple-500 disabled:cursor-not-allowed'
           aria-label='Add new task'
           disabled={!board?.columns.length}
         >

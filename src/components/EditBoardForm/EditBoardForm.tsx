@@ -7,30 +7,46 @@ import { Input } from 'components/Input'
 import { DynamicItems } from 'components/DynamicItems'
 import { Button } from 'components/Button'
 import { trpc } from 'lib/trpc'
+import { useBoard } from 'hooks'
+import { compareStringArrays } from 'utils/functions/compare-string-arrays'
 
-export const AddBoardModal = NiceModal.create(() => {
-  const [name, setName] = useState('')
-  const [columns, setColumns] = useState<string[]>([])
+export const EditBoardModal = NiceModal.create(() => {
+  const { board } = useBoard()
+  const [name, setName] = useState(board?.name ?? '')
+  const defaultColumns = board?.columns.map(({ name }) => name) ?? []
+  const [columns, setColumns] = useState(defaultColumns)
   const [errors, setErrors] = useState<{
     [key: string]: string | Record<number, string>
   }>({})
   const modal = useModal()
   const utils = trpc.useContext()
-  const mutation = trpc.useMutation('board.create-board', {
+  const mutation = trpc.useMutation('board.update-board', {
     onSuccess: () => {
       utils.invalidateQueries(['board.get-boards'])
+      if (board) {
+        utils.invalidateQueries([
+          'board.get-board-tasks',
+          { boardId: board.id }
+        ])
+      }
     }
   })
 
   function onClose() {
-    setName('')
-    setColumns([])
     setErrors({})
     modal.hide()
   }
 
   function onSubmit(event: FormEvent) {
     event.preventDefault()
+
+    if (!board) {
+      return
+    }
+
+    if (name === board.name && compareStringArrays(columns, defaultColumns)) {
+      return
+    }
 
     const { isValid, errors: formErrors } = boardFormValidation({
       name,
@@ -45,10 +61,10 @@ export const AddBoardModal = NiceModal.create(() => {
     setErrors({})
 
     mutation.mutate(
-      { name, columns },
+      { name, columns, boardId: board.id },
       {
         onSuccess: () => {
-          toast.success('Board created successfully')
+          toast.success('Board updated successfully')
           onClose()
         }
       }
@@ -56,7 +72,7 @@ export const AddBoardModal = NiceModal.create(() => {
   }
 
   return (
-    <Modal isOpen={modal.visible} onClose={onClose} title='Add New Board'>
+    <Modal isOpen={modal.visible} onClose={onClose} title='Edit Board'>
       <form onSubmit={onSubmit}>
         <Input
           label='Board Name'
@@ -76,7 +92,7 @@ export const AddBoardModal = NiceModal.create(() => {
         />
 
         <Button type='submit' className='mt-5' disabled={mutation.isLoading}>
-          Create New Board
+          Save Changes
         </Button>
       </form>
     </Modal>

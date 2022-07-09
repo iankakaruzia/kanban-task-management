@@ -1,11 +1,11 @@
 import { z } from 'zod'
 
-type AddBoardFormValues = {
+type BoardFormValues = {
   name: string
   columns: string[]
 }
 
-export function addBoardFormValidation(values: AddBoardFormValues) {
+export function boardFormValidation(values: BoardFormValues) {
   const schema = z.object({
     name: z
       .string({ required_error: "Can't be empty" })
