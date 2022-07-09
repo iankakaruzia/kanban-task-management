@@ -17,11 +17,20 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     transformer: superjson
   })
 
-  await ssg.fetchQuery('board.get-boards')
+  const { boards } = await ssg.fetchQuery('board.get-boards')
+
+  if (boards.length) {
+    const firstBoard = boards[0]
+
+    await ssg.fetchQuery('board.get-board-tasks', {
+      boardId: firstBoard.id
+    })
+  }
 
   return {
     props: {
-      trpcState: ssg.dehydrate()
+      trpcState: ssg.dehydrate(),
+      boardId: boards.length ? boards[0].id : null
     }
   }
 }

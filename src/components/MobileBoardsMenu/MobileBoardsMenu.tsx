@@ -5,12 +5,13 @@ import Image from 'next/image'
 import { Fragment, useState } from 'react'
 import { classNames } from 'utils/styles/class-names'
 import { AddBoardModal } from 'components/AddBoardForm'
-
-const PROJECTS = ['Platform Launch', 'Marketing Plan', 'Roadmap']
+import { trpc } from 'lib/trpc'
+import { useBoard } from 'hooks'
 
 export function MobileBoardsMenu() {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedProject, setSelectedProject] = useState(PROJECTS[0])
+  const { data } = trpc.useQuery(['board.get-boards'])
+  const { board, selectBoard } = useBoard()
 
   function closeModal() {
     setIsOpen(false)
@@ -25,8 +26,8 @@ export function MobileBoardsMenu() {
     NiceModal.show('add-board-form-modal')
   }
 
-  function updateSelectedProject(project: string) {
-    setSelectedProject(project)
+  function updateSelectedProject(id: number) {
+    selectBoard(id)
     closeModal()
   }
 
@@ -37,7 +38,7 @@ export function MobileBoardsMenu() {
         onClick={openModal}
         className='flex items-center md:hidden'
       >
-        <strong className='mr-2'>Platform Launch</strong>
+        <strong className='mr-2'>{board?.name}</strong>
         <Image
           src={
             isOpen
@@ -84,19 +85,19 @@ export function MobileBoardsMenu() {
                     as='h4'
                     className='font-bold text-heading-sm text-gray-300 ml-6 mb-5'
                   >
-                    ALL BOARDS ({PROJECTS.length})
+                    ALL BOARDS ({data?.boards.length ?? 0})
                   </Dialog.Title>
                   <div className='mt-2'>
                     <ul className='pr-6'>
-                      {PROJECTS.map((project) => (
-                        <li key={project}>
+                      {data?.boards.map((project) => (
+                        <li key={project.id}>
                           <button
                             className={classNames(
                               'mr-6 flex items-center px-6 py-[14px] w-full text-heading-md',
-                              project === selectedProject &&
+                              project.id === board?.id &&
                                 'bg-purple-500 rounded-tr-full rounded-br-full'
                             )}
-                            onClick={() => updateSelectedProject(project)}
+                            onClick={() => updateSelectedProject(project.id)}
                           >
                             <svg
                               xmlns='http://www.w3.org/2000/svg'
@@ -105,9 +106,7 @@ export function MobileBoardsMenu() {
                             >
                               <path
                                 fill={
-                                  project === selectedProject
-                                    ? '#fff'
-                                    : '#828FA3'
+                                  project.id === board?.id ? '#fff' : '#828FA3'
                                 }
                                 d='M0 2.889A2.889 2.889 0 012.889 0H13.11A2.889 2.889 0 0116 2.889V13.11A2.888 2.888 0 0113.111 16H2.89A2.889 2.889 0 010 13.111V2.89zm1.333 5.555v4.667c0 .859.697 1.556 1.556 1.556h6.889V8.444H1.333zm8.445-1.333V1.333h-6.89A1.556 1.556 0 001.334 2.89v4.22h8.445zm4.889-1.333H11.11v4.444h3.556V5.778zm0 5.778H11.11v3.11h2a1.556 1.556 0 001.556-1.555v-1.555zm0-7.112V2.89a1.555 1.555 0 00-1.556-1.556h-2v3.111h3.556z'
                               ></path>
@@ -115,12 +114,12 @@ export function MobileBoardsMenu() {
                             <span
                               className={classNames(
                                 'ml-3',
-                                project === selectedProject
+                                project.id === board?.id
                                   ? 'text-white'
                                   : 'text-gray-300'
                               )}
                             >
-                              {project}
+                              {project.name}
                             </span>
                           </button>
                         </li>

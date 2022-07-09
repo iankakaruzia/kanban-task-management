@@ -3,10 +3,11 @@ import { Menu, Transition } from '@headlessui/react'
 import { MobileBoardsMenu } from 'components/MobileBoardsMenu'
 import { Fragment } from 'react'
 import { classNames } from 'utils/styles/class-names'
-import { useSidebar } from 'hooks'
+import { useBoard, useSidebar } from 'hooks'
 
 export function Header() {
   const { isOpen } = useSidebar()
+  const { board } = useBoard()
 
   return (
     <header className='flex py-4 md:p-0 items-center bg-white dark:bg-gray-500'>
@@ -28,14 +29,15 @@ export function Header() {
       <div className='flex-1 md:pl-6 self-stretch flex items-center md:border-b border-gray-200 dark:border-gray-400'>
         <MobileBoardsMenu />
         <h3 className='hidden md:block text-xl leading-[25px] lg:text-heading-xl'>
-          Platform Launch
+          {board?.name}
         </h3>
       </div>
 
       <div className='flex items-center pr-2 md:pr-4 md:py-4 lg:py-5 md:border-b border-gray-200 dark:border-gray-400'>
         <button
-          className='mr-2 md:mr-4 bg-purple-500 hover:bg-purple-300 h-8 md:h-auto w-12 md:w-auto md:px-6 md:py-[14px] rounded-3xl transition-colors'
+          className='mr-2 md:mr-4 bg-purple-500 hover:bg-purple-300 h-8 md:h-auto w-12 md:w-auto md:px-6 md:py-[14px] rounded-3xl transition-colors disabled:opacity-25 hover:disabled:bg-purple-500 cursor-not-allowed'
           aria-label='Add new task'
+          disabled={!board?.columns.length}
         >
           <div className='block md:hidden'>
             <Image

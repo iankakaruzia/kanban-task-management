@@ -7,27 +7,29 @@ import superjson from 'superjson'
 import NiceModal from '@ebay/nice-modal-react'
 import { Toaster } from 'react-hot-toast'
 import { AppRouter } from 'server/routers'
-import { SidebarProvider } from 'hooks'
+import { BoardProvider, SidebarProvider } from 'hooks'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute='class'>
       <NiceModal.Provider>
         <SidebarProvider>
-          <Toaster position='top-right' />
-          <Head>
-            <title>Kanban Task Management</title>
-            <link
-              rel='shortcut icon'
-              href='/assets/favicon-32x32.png'
-              type='image/png'
-            />
-            <meta
-              name='description'
-              content='Have full control over your tasks and projects.'
-            />
-          </Head>
-          <Component {...pageProps} />
+          <BoardProvider boardId={pageProps.boardId}>
+            <Toaster position='top-right' />
+            <Head>
+              <title>Kanban Task Management</title>
+              <link
+                rel='shortcut icon'
+                href='/assets/favicon-32x32.png'
+                type='image/png'
+              />
+              <meta
+                name='description'
+                content='Have full control over your tasks and projects.'
+              />
+            </Head>
+            <Component {...pageProps} />
+          </BoardProvider>
         </SidebarProvider>
       </NiceModal.Provider>
     </ThemeProvider>

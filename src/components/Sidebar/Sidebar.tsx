@@ -1,8 +1,8 @@
 import { Transition } from '@headlessui/react'
 import { ThemeToggle } from 'components/ThemeToggle'
-import { useSidebar } from 'hooks'
+import { useBoard, useSidebar } from 'hooks'
 import Image from 'next/image'
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import NiceModal from '@ebay/nice-modal-react'
 import { classNames } from 'utils/styles/class-names'
 import { AddBoardModal } from 'components/AddBoardForm'
@@ -11,11 +11,10 @@ import { trpc } from 'lib/trpc'
 export function Sidebar() {
   const { isOpen, toggle } = useSidebar()
   const { data } = trpc.useQuery(['board.get-boards'])
-
-  const [selectedProject, setSelectedProject] = useState(data?.boards[0]?.id)
+  const { board, selectBoard } = useBoard()
 
   function updateSelectedProject(id: number) {
-    setSelectedProject(id)
+    selectBoard(id)
   }
 
   function showAddBoardFormModal() {
@@ -45,7 +44,7 @@ export function Sidebar() {
                   <button
                     className={classNames(
                       'w-full flex items-center px-6 py-[14px] rounded-tr-[100px] rounded-br-[100px] text-heading-md group transition-all',
-                      project.id === selectedProject
+                      project.id === board?.id
                         ? 'bg-purple-500 hover:bg-opacity-80'
                         : 'hover:bg-purple-500 hover:bg-opacity-10 hover:dark:bg-white'
                     )}
@@ -58,7 +57,7 @@ export function Sidebar() {
                     >
                       <path
                         className={classNames(
-                          project.id === selectedProject
+                          project.id === board?.id
                             ? 'fill-white'
                             : 'fill-gray-300 group-hover:fill-purple-500'
                         )}
@@ -68,7 +67,7 @@ export function Sidebar() {
                     <span
                       className={classNames(
                         'ml-3 transition-colors',
-                        project.id === selectedProject
+                        project.id === board?.id
                           ? 'text-white'
                           : 'text-gray-300 group-hover:text-purple-500'
                       )}
