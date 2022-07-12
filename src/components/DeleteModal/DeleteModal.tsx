@@ -4,20 +4,15 @@ import { Button } from 'components/Button'
 
 type DeleteModalProps = {
   content: string
+  isLoading?: boolean
   onDelete: () => void
 }
 
 export const DeleteModal = NiceModal.create<DeleteModalProps>(
-  ({ content, onDelete }) => {
+  ({ content, onDelete, isLoading = false }) => {
     const modal = useModal()
 
     function onClose() {
-      modal.hide()
-    }
-
-    // TODO: Refactor logic to only close the modal only if request is successful
-    function handleDelete() {
-      onDelete()
       modal.hide()
     }
 
@@ -31,7 +26,12 @@ export const DeleteModal = NiceModal.create<DeleteModalProps>(
         <p className='text-gray-300 font-medium text-body-lg'>{content}</p>
 
         <div className='flex gap-4 mt-6'>
-          <Button variant='danger' size='large' onClick={handleDelete}>
+          <Button
+            variant='danger'
+            size='large'
+            onClick={onDelete}
+            isLoading={isLoading}
+          >
             Delete
           </Button>
           <Button variant='secondary' size='large' onClick={onClose}>

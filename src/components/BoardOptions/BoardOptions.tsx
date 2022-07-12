@@ -8,6 +8,10 @@ import { EditBoardModal } from 'components/EditBoardForm'
 import { DeleteModal } from 'components/DeleteModal'
 import { trpc } from 'lib/trpc'
 import { useBoard } from 'hooks'
+import {
+  DELETE_BOARD_MODAL_ID,
+  EDIT_BOARD_MODAL_ID
+} from 'utils/constants/modal-ids'
 
 export function BoardOptions() {
   const { board, removeBoard } = useBoard()
@@ -18,16 +22,17 @@ export function BoardOptions() {
       if (board) {
         utils.cancelQuery(['board.get-board-tasks', { boardId: board.id }])
       }
+      NiceModal.hide(DELETE_BOARD_MODAL_ID)
       removeBoard()
     }
   })
 
   function showEditBoardFormModal() {
-    NiceModal.show('edit-board-form-modal')
+    NiceModal.show(EDIT_BOARD_MODAL_ID)
   }
 
   function showDeleteBoardModal() {
-    NiceModal.show('delete-board-modal')
+    NiceModal.show(DELETE_BOARD_MODAL_ID)
   }
 
   function onDelete() {
@@ -101,9 +106,10 @@ export function BoardOptions() {
         </Transition>
       </Menu>
 
-      <EditBoardModal id='edit-board-form-modal' />
+      <EditBoardModal id={EDIT_BOARD_MODAL_ID} />
       <DeleteModal
-        id='delete-board-modal'
+        id={DELETE_BOARD_MODAL_ID}
+        isLoading={mutation.isLoading}
         content={`Are you sure you want to delete the '${board?.name}' board? This action will remove all columns and tasks and cannot be reversed.`}
         onDelete={onDelete}
       />

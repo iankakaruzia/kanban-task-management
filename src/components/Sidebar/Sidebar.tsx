@@ -7,6 +7,7 @@ import NiceModal from '@ebay/nice-modal-react'
 import { classNames } from 'utils/styles/class-names'
 import { AddBoardModal } from 'components/AddBoardForm'
 import { trpc } from 'lib/trpc'
+import { ADD_BOARD_MODAL_ID } from 'utils/constants/modal-ids'
 
 export function Sidebar() {
   const { isOpen, toggle } = useSidebar()
@@ -18,7 +19,7 @@ export function Sidebar() {
   }
 
   function showAddBoardFormModal() {
-    NiceModal.show('add-board-form-modal')
+    NiceModal.show(ADD_BOARD_MODAL_ID)
   }
 
   return (
@@ -145,7 +146,7 @@ export function Sidebar() {
           </button>
         </Transition>
       )}
-      <AddBoardModal id='add-board-form-modal' />
+      <AddBoardModal id={ADD_BOARD_MODAL_ID} />
     </>
   )
 }

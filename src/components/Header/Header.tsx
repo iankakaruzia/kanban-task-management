@@ -6,13 +6,14 @@ import { useBoard, useSidebar } from 'hooks'
 import { AddTaskModal } from 'components/AddTaskForm'
 import { BoardOptions } from 'components/BoardOptions'
 import { Skeleton } from 'components/Skeleton'
+import { ADD_TASK_MODAL_ID } from 'utils/constants/modal-ids'
 
 export function Header() {
   const { isOpen } = useSidebar()
   const { board, isLoading } = useBoard()
 
   function showAddTaskFormModal() {
-    NiceModal.show('add-task-form-modal')
+    NiceModal.show(ADD_TASK_MODAL_ID)
   }
 
   return (
@@ -74,7 +75,7 @@ export function Header() {
           <BoardOptions />
         </div>
       </header>
-      <AddTaskModal id='add-task-form-modal' />
+      <AddTaskModal id={ADD_TASK_MODAL_ID} />
     </>
   )
 }

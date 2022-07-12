@@ -15,12 +15,13 @@ export function Button({
   className,
   type = 'button',
   isLoading = false,
+  disabled,
   ...props
 }: ButtonProps) {
   return (
     <button
       className={classNames(
-        'w-full transition-all',
+        'w-full transition-all flex items-center justify-center disabled:cursor-not-allowed',
         variant === 'primary' && 'bg-purple-500 hover:bg-purple-300 text-white',
         variant === 'secondary' &&
           'bg-purple-500 bg-opacity-10 hover:bg-opacity-25 hover:bg-purple-300 dark:bg-white dark:hover:bg-opacity-95 text-purple-500',
@@ -30,6 +31,7 @@ export function Button({
         className && className
       )}
       type={type}
+      disabled={disabled || isLoading}
       {...props}
     >
       {isLoading ? (

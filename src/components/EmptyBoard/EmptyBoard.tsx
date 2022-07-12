@@ -2,11 +2,12 @@ import NiceModal from '@ebay/nice-modal-react'
 import { Button } from 'components/Button'
 import { EditBoardModal } from 'components/EditBoardForm'
 import { useBoard } from 'hooks'
+import { EDIT_BOARD_MODAL_ID } from 'utils/constants/modal-ids'
 
 export function EmptyBoard() {
   const { board } = useBoard()
   function showEditBoardFormModal() {
-    NiceModal.show('edit-board-form-modal')
+    NiceModal.show(EDIT_BOARD_MODAL_ID)
   }
 
   return (
@@ -28,7 +29,7 @@ export function EmptyBoard() {
         )}
       </div>
 
-      <EditBoardModal id='edit-board-form-modal' />
+      <EditBoardModal id={EDIT_BOARD_MODAL_ID} />
     </>
   )
 }

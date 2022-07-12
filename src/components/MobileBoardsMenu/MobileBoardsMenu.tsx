@@ -7,6 +7,7 @@ import { classNames } from 'utils/styles/class-names'
 import { AddBoardModal } from 'components/AddBoardForm'
 import { trpc } from 'lib/trpc'
 import { useBoard } from 'hooks'
+import { ADD_BOARD_MODAL_ID } from 'utils/constants/modal-ids'
 
 export function MobileBoardsMenu() {
   const [isOpen, setIsOpen] = useState(false)
@@ -23,7 +24,7 @@ export function MobileBoardsMenu() {
 
   function showAddBoardFormModal() {
     closeModal()
-    NiceModal.show('add-board-form-modal')
+    NiceModal.show(ADD_BOARD_MODAL_ID)
   }
 
   function updateSelectedProject(id: number) {
@@ -156,7 +157,7 @@ export function MobileBoardsMenu() {
           </div>
         </Dialog>
       </Transition>
-      <AddBoardModal id='add-board-form-modal' />
+      <AddBoardModal id={ADD_BOARD_MODAL_ID} />
     </>
   )
 }
