@@ -1,5 +1,11 @@
 import { z } from 'zod'
 
+const defaultRequiredStringFormat = z
+  .string({ required_error: "Can't be empty" })
+  .min(1, { message: "Can't be empty" })
+
+const defaultStringArrayFormat = z.array(defaultRequiredStringFormat).optional()
+
 type BoardFormValues = {
   name: string
   columns: string[]
@@ -7,16 +13,8 @@ type BoardFormValues = {
 
 export function boardFormValidation(values: BoardFormValues) {
   const schema = z.object({
-    name: z
-      .string({ required_error: "Can't be empty" })
-      .min(1, { message: "Can't be empty" }),
-    columns: z
-      .array(
-        z
-          .string({ required_error: "Can't be empty" })
-          .min(1, { message: "Can't be empty" })
-      )
-      .optional()
+    name: defaultRequiredStringFormat,
+    columns: defaultStringArrayFormat
   })
 
   const validated = schema.safeParse(values)
@@ -33,15 +31,7 @@ export function boardFormValidation(values: BoardFormValues) {
   }
 
   if (formattedErrors.columns) {
-    Object.keys(formattedErrors.columns).forEach((key) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const columnErrors = formattedErrors.columns as any
-      if (key !== '_errors') {
-        errors.columns = Object.assign(errors.columns || {}, {
-          [key]: columnErrors[key]._errors[0]
-        })
-      }
-    })
+    errors.columns = formatStringArrayErrors(formattedErrors.columns)
   }
 
   return {
@@ -59,9 +49,7 @@ type TaskFormValues = {
 
 export function taskFormValidation(values: TaskFormValues) {
   const schema = z.object({
-    title: z
-      .string({ required_error: "Can't be empty" })
-      .min(1, { message: "Can't be empty" }),
+    title: defaultRequiredStringFormat,
     description: z.string({ required_error: "Can't be empty" }),
     status: z.object(
       {
@@ -70,13 +58,7 @@ export function taskFormValidation(values: TaskFormValues) {
       },
       { required_error: "Can't be empty" }
     ),
-    subtasks: z
-      .array(
-        z
-          .string({ required_error: "Can't be empty" })
-          .min(1, { message: "Can't be empty" })
-      )
-      .optional()
+    subtasks: defaultStringArrayFormat
   })
 
   const validated = schema.safeParse(values)
@@ -97,19 +79,26 @@ export function taskFormValidation(values: TaskFormValues) {
   }
 
   if (formattedErrors.subtasks) {
-    Object.keys(formattedErrors.subtasks).forEach((key) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const subtasksErrors = formattedErrors.subtasks as any
-      if (key !== '_errors') {
-        errors.subtasks = Object.assign(errors.columns || {}, {
-          [key]: subtasksErrors[key]._errors[0]
-        })
-      }
-    })
+    errors.subtasks = formatStringArrayErrors(formattedErrors.subtasks)
   }
 
   return {
     isValid: false,
     errors
   }
+}
+
+function formatStringArrayErrors(errors: object) {
+  let formattedErrors: Record<number, string> = {}
+  Object.keys(errors).forEach((key) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const error = errors as any
+    if (key !== '_errors') {
+      formattedErrors = Object.assign(formattedErrors || {}, {
+        [key]: error[key]._errors[0]
+      })
+    }
+  })
+
+  return formattedErrors
 }

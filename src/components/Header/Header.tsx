@@ -5,10 +5,11 @@ import { classNames } from 'utils/styles/class-names'
 import { useBoard, useSidebar } from 'hooks'
 import { AddTaskModal } from 'components/AddTaskForm'
 import { BoardOptions } from 'components/BoardOptions'
+import { Skeleton } from 'components/Skeleton'
 
 export function Header() {
   const { isOpen } = useSidebar()
-  const { board } = useBoard()
+  const { board, isLoading } = useBoard()
 
   function showAddTaskFormModal() {
     NiceModal.show('add-task-form-modal')
@@ -40,7 +41,13 @@ export function Header() {
         <div className='flex-1 md:pl-6 self-stretch flex items-center md:border-b border-gray-200 dark:border-gray-400'>
           <MobileBoardsMenu />
           <h3 className='hidden md:block text-xl leading-[25px] lg:text-heading-xl'>
-            {board?.name ?? 'No board selected'}
+            {isLoading ? (
+              <Skeleton>
+                <Skeleton.Line className='h-7 w-52' />
+              </Skeleton>
+            ) : (
+              board?.name ?? 'No board selected'
+            )}
           </h3>
         </div>
 

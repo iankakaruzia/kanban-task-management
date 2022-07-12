@@ -15,6 +15,7 @@ export const DeleteModal = NiceModal.create<DeleteModalProps>(
       modal.hide()
     }
 
+    // TODO: Refactor logic to only close the modal only if request is successful
     function handleDelete() {
       onDelete()
       modal.hide()

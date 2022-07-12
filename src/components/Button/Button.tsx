@@ -1,9 +1,11 @@
+import { Spinner } from 'components/Spinner'
 import { ButtonHTMLAttributes } from 'react'
 import { classNames } from 'utils/styles/class-names'
 
 type ButtonProps = {
   variant?: 'primary' | 'secondary' | 'danger'
   size?: 'small' | 'large'
+  isLoading?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
 export function Button({
@@ -12,6 +14,7 @@ export function Button({
   children,
   className,
   type = 'button',
+  isLoading = false,
   ...props
 }: ButtonProps) {
   return (
@@ -29,7 +32,14 @@ export function Button({
       type={type}
       {...props}
     >
-      {children}
+      {isLoading ? (
+        <span className='flex items-center gap-2'>
+          <Spinner color={variant === 'secondary' ? 'secondary' : 'tertiary'} />
+          Loading...
+        </span>
+      ) : (
+        children
+      )}
     </button>
   )
 }
