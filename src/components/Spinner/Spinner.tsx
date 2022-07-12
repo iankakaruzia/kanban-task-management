@@ -13,7 +13,8 @@ export function Spinner({ size = 'small', color = 'primary' }: SpinnerProps) {
         'inline animate-spin',
         size === 'small' && 'w-4 h-4',
         size === 'large' && 'w-8 h-8',
-        color === 'primary' && 'text-gray-200 dark:text-gray-400 fill-white',
+        color === 'primary' &&
+          'text-gray-200 dark:text-gray-400 fill-purple-500',
         color === 'secondary' &&
           'fill-purple-500 text-white dark:text-gray-200',
         color === 'tertiary' && 'fill-white text-gray-200'
