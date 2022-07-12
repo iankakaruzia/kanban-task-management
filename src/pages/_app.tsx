@@ -11,7 +11,7 @@ import { BoardProvider, SidebarProvider } from 'hooks'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider attribute='class'>
+    <ThemeProvider attribute='class' defaultTheme='dark'>
       <NiceModal.Provider>
         <SidebarProvider>
           <BoardProvider boardId={pageProps.boardId}>

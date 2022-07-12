@@ -1,3 +1,4 @@
+import { Board } from 'components/Board'
 import { EmptyBoard } from 'components/EmptyBoard'
 import { Spinner } from 'components/Spinner'
 import { useBoard } from 'hooks'
@@ -11,7 +12,7 @@ export function BoardContent() {
           <Spinner size='large' />
         </div>
       ) : board?.columns.length ? (
-        <h1>Kanban board</h1>
+        <Board />
       ) : (
         <EmptyBoard />
       )}
