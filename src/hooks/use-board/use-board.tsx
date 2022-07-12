@@ -28,11 +28,13 @@ export type Board = {
 export type BoardContextData = {
   board: Board | null
   selectBoard: (boardId: number) => void
+  removeBoard: () => void
 }
 
 export const BoardContextDefaultValues: BoardContextData = {
   board: null,
-  selectBoard: () => null
+  selectBoard: () => null,
+  removeBoard: () => null
 }
 
 export const BoardContext = createContext<BoardContextData>(
@@ -54,8 +56,14 @@ function BoardProvider({ children, boardId: ssrBoardId }: BoardProviderProps) {
     setBoardId(selectedBoardId)
   }
 
+  function removeBoard() {
+    setBoardId(-1)
+  }
+
   return (
-    <BoardContext.Provider value={{ board: data?.board ?? null, selectBoard }}>
+    <BoardContext.Provider
+      value={{ board: data?.board ?? null, selectBoard, removeBoard }}
+    >
       {children}
     </BoardContext.Provider>
   )

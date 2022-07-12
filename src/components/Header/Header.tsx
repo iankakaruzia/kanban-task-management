@@ -1,12 +1,10 @@
 import Image from 'next/image'
-import { Menu, Transition } from '@headlessui/react'
 import { MobileBoardsMenu } from 'components/MobileBoardsMenu'
-import { Fragment } from 'react'
 import NiceModal from '@ebay/nice-modal-react'
 import { classNames } from 'utils/styles/class-names'
 import { useBoard, useSidebar } from 'hooks'
 import { AddTaskModal } from 'components/AddTaskForm'
-import { EditBoardModal } from 'components/EditBoardForm'
+import { BoardOptions } from 'components/BoardOptions'
 
 export function Header() {
   const { isOpen } = useSidebar()
@@ -14,10 +12,6 @@ export function Header() {
 
   function showAddTaskFormModal() {
     NiceModal.show('add-task-form-modal')
-  }
-
-  function showEditBoardFormModal() {
-    NiceModal.show('edit-board-form-modal')
   }
 
   return (
@@ -46,7 +40,7 @@ export function Header() {
         <div className='flex-1 md:pl-6 self-stretch flex items-center md:border-b border-gray-200 dark:border-gray-400'>
           <MobileBoardsMenu />
           <h3 className='hidden md:block text-xl leading-[25px] lg:text-heading-xl'>
-            {board?.name}
+            {board?.name ?? 'No board selected'}
           </h3>
         </div>
 
@@ -70,61 +64,10 @@ export function Header() {
             </span>
           </button>
 
-          <Menu as='div' className='relative inline-block text-left'>
-            <Menu.Button
-              className='p-2 rounded-full'
-              aria-label='Board options'
-            >
-              <div className='w-[3.69px] md:w-[4.62px] h-4 md:h-5 relative'>
-                <Image
-                  src='/assets/icon-vertical-ellipsis.svg'
-                  alt=''
-                  layout='fill'
-                />
-              </div>
-            </Menu.Button>
-            <Transition
-              as={Fragment}
-              enter='transition ease-out duration-100'
-              enterFrom='transform opacity-0 scale-95'
-              enterTo='transform opacity-100 scale-100'
-              leave='transition ease-in duration-75'
-              leaveFrom='transform opacity-100 scale-100'
-              leaveTo='transform opacity-0 scale-95'
-            >
-              <Menu.Items className='absolute right-0 top-10 md:top-12 bg-white dark:bg-gray-600 w-48 flex flex-col items-start rounded-lg p-4'>
-                <Menu.Item>
-                  {({ active }: { active: boolean }) => (
-                    <button
-                      onClick={showEditBoardFormModal}
-                      className={classNames(
-                        'mb-4 font-medium text-body-lg text-gray-300',
-                        active && 'ring-2 ring-gray-600 dark:ring-white'
-                      )}
-                    >
-                      Edit Board
-                    </button>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }: { active: boolean }) => (
-                    <button
-                      className={classNames(
-                        'font-medium text-body-lg text-red-500',
-                        active && 'ring-2 ring-red-500'
-                      )}
-                    >
-                      Delete Board
-                    </button>
-                  )}
-                </Menu.Item>
-              </Menu.Items>
-            </Transition>
-          </Menu>
+          <BoardOptions />
         </div>
       </header>
       <AddTaskModal id='add-task-form-modal' />
-      <EditBoardModal id='edit-board-form-modal' />
     </>
   )
 }
