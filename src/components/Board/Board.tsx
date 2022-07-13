@@ -9,7 +9,7 @@ export function Board() {
   }
 
   return (
-    <div className='flex overflow-x-scroll'>
+    <div className='flex gap-6 overflow-x-auto scroll-smooth h-full px-4 py-6'>
       {board.columns.map((column) => (
         <TaskColumn key={column.id} {...column} />
       ))}

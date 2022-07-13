@@ -34,7 +34,7 @@ export function Sidebar() {
         leaveFrom='translate-x-0'
         leaveTo='-translate-x-full'
       >
-        <aside className='hidden md:flex flex-col justify-between flex-1 bg-white dark:bg-gray-500 max-w-[260px] lg:max-w-[300px] transition-all border-r border-gray-200 dark:border-gray-400'>
+        <aside className='hidden md:flex flex-col flex-shrink-0 justify-between flex-1 bg-white dark:bg-gray-500 w-full min-w-[260px] lg:min-w-[300px] max-w-[260px] lg:max-w-[300px] transition-all border-r border-gray-200 dark:border-gray-400'>
           <div className='mt-8'>
             <h3 className='font-bold text-heading-sm text-gray-300 ml-6 mb-5'>
               ALL BOARDS ({data?.boards.length ?? 0})

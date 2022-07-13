@@ -8,6 +8,9 @@ module.exports = {
         'logo-dark': 'url(/assets/logo-dark.svg)',
         'logo-light': 'url(/assets/logo-light.svg)'
       },
+      boxShadow: {
+        card: '0px 4px 6px rgba(54, 78, 126, 0.101545)'
+      },
       fontFamily: {
         sans: "'Plus Jakarta Sans', sans-serif"
       },
