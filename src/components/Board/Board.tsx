@@ -1,4 +1,4 @@
-import { TaskColumn } from 'components/TaskColumn/TaskColumn'
+import { TaskColumn } from 'components/TaskColumn'
 import { useBoard } from 'hooks'
 
 export function Board() {

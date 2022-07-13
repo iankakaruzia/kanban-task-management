@@ -1,10 +1,12 @@
 import { Dialog, Transition } from '@headlessui/react'
+import { Skeleton } from 'components/Skeleton'
 import { Fragment, ReactNode } from 'react'
 import { classNames } from 'utils/styles/class-names'
 
 type ModalProps = {
   isOpen: boolean
-  title: string
+  title?: string
+  isLoading?: boolean
   onClose: () => void
   children: ReactNode
   titleClassNames?: string
@@ -12,7 +14,8 @@ type ModalProps = {
 
 export function Modal({
   isOpen,
-  title,
+  title = '',
+  isLoading = false,
   onClose,
   children,
   titleClassNames
@@ -44,15 +47,23 @@ export function Modal({
               leaveTo='opacity-0 scale-95'
             >
               <Dialog.Panel className='w-full max-w-[480px] transform rounded-2xl bg-white dark:bg-gray-500 p-6 md:p-8 text-left align-middle shadow-xl transition-all'>
-                <Dialog.Title
-                  as='h3'
-                  className={classNames(
-                    'text-heading-lg mb-6',
-                    titleClassNames && titleClassNames
-                  )}
-                >
-                  {title}
-                </Dialog.Title>
+                {(title || isLoading) && (
+                  <Dialog.Title
+                    as='h3'
+                    className={classNames(
+                      'text-heading-lg mb-6',
+                      titleClassNames && titleClassNames
+                    )}
+                  >
+                    {isLoading ? (
+                      <Skeleton>
+                        <Skeleton.Line className='w-40 h-6' />
+                      </Skeleton>
+                    ) : (
+                      title
+                    )}
+                  </Dialog.Title>
+                )}
 
                 {children}
               </Dialog.Panel>
