@@ -1,13 +1,30 @@
+import { trpc } from 'lib/trpc'
 import { Subtask } from 'models/board'
+import { ChangeEvent } from 'react'
 import { getSubtasksInfo } from 'utils/functions/get-subtasks-info'
 import { classNames } from 'utils/styles/class-names'
 
 type SubtasksProps = {
+  taskId: number
   subtasks: Subtask[]
 }
 
-export function Subtasks({ subtasks }: SubtasksProps) {
+export function Subtasks({ subtasks, taskId }: SubtasksProps) {
+  const utils = trpc.useContext()
+  const mutation = trpc.useMutation('subtask.update-subtask', {
+    onSuccess: () => {
+      utils.invalidateQueries(['task.get-task', { taskId }])
+    }
+  })
   const { subtasksCompleted, totalSubtasks } = getSubtasksInfo(subtasks)
+
+  function handleChange(
+    subtaskId: number,
+    event: ChangeEvent<HTMLInputElement>
+  ) {
+    mutation.mutate({ subtaskId, isCompleted: event.target.checked })
+  }
+
   return (
     <div>
       <span className='block mb-4 text-body-md text-gray-300 dark:text-white'>
@@ -24,7 +41,7 @@ export function Subtasks({ subtasks }: SubtasksProps) {
               checked={subtask.isCompleted}
               id={`subtask-${subtask.id}`}
               type='checkbox'
-              onChange={(e) => console.log({ value: e.target.value })}
+              onChange={(event) => handleChange(subtask.id, event)}
               className='w-4 h-4 cursor-pointer text-purple-500 bg-white dark:bg-gray-500 focus:ring-purple-500 focus:ring-2 rounded checked:bg-purple-500 dark:checked:bg-purple-500 border-gray-300 border-opacity-25'
             />
             <label

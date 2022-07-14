@@ -3,13 +3,13 @@ import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { trpc } from 'lib/trpc'
 import { Skeleton } from 'components/Skeleton'
 import { Subtasks } from 'components/Subtasks'
+import { TaskOptions } from 'components/TaskOptions'
 
 type TaskDetailsProps = {
   taskId: number
 }
 
 export const TaskDetails = NiceModal.create<TaskDetailsProps>(({ taskId }) => {
-  console.log({ taskId })
   const modal = useModal()
   const { data, isLoading } = trpc.useQuery(['task.get-task', { taskId }])
 
@@ -23,12 +23,17 @@ export const TaskDetails = NiceModal.create<TaskDetailsProps>(({ taskId }) => {
       onClose={onClose}
       title={data?.task?.title}
       isLoading={isLoading}
+      titleClassNames='pr-4'
     >
       {isLoading && (
         <Skeleton>
           <Skeleton.Line className='w-40 h-6' />
         </Skeleton>
       )}
+
+      <div className='absolute top-6 right-8'>
+        <TaskOptions isLoading={isLoading} />
+      </div>
 
       {(!data || data.task === null) && !isLoading && <p>Unable to fetch</p>}
 
@@ -39,7 +44,7 @@ export const TaskDetails = NiceModal.create<TaskDetailsProps>(({ taskId }) => {
       )}
 
       {data?.task?.subtasks.length && (
-        <Subtasks subtasks={data.task.subtasks} />
+        <Subtasks taskId={data.task.id} subtasks={data.task.subtasks} />
       )}
     </Modal>
   )
