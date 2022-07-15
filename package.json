@@ -57,7 +57,7 @@
   "lint-staged": {
     "src/**/*": [
       "yarn lint --cache --cache-location .next/cache/eslint/ --fix",
-      "yarn test --findRelatedTests ./src/**/*.{ts,tsx} --bail"
+      "yarn test --bail"
     ]
   }
 }

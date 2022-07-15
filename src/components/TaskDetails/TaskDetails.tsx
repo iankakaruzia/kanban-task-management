@@ -4,6 +4,7 @@ import { trpc } from 'lib/trpc'
 import { Skeleton } from 'components/Skeleton'
 import { Subtasks } from 'components/Subtasks'
 import { TaskOptions } from 'components/TaskOptions'
+import { useBoard } from 'hooks'
 
 type TaskDetailsProps = {
   taskId: number
@@ -11,9 +12,11 @@ type TaskDetailsProps = {
 
 export const TaskDetails = NiceModal.create<TaskDetailsProps>(({ taskId }) => {
   const modal = useModal()
+  const { invalidateBoard } = useBoard()
   const { data, isLoading } = trpc.useQuery(['task.get-task', { taskId }])
 
   function onClose() {
+    invalidateBoard()
     modal.hide()
   }
 

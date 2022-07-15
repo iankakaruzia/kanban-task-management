@@ -7,13 +7,15 @@ export type BoardContextData = {
   isLoading: boolean
   selectBoard: (boardId: number) => void
   removeBoard: () => void
+  invalidateBoard: () => void
 }
 
 export const BoardContextDefaultValues: BoardContextData = {
   board: null,
   isLoading: false,
   selectBoard: () => null,
-  removeBoard: () => null
+  removeBoard: () => null,
+  invalidateBoard: () => null
 }
 
 export const BoardContext = createContext<BoardContextData>(
@@ -27,6 +29,7 @@ export type BoardProviderProps = {
 
 function BoardProvider({ children, boardId: ssrBoardId }: BoardProviderProps) {
   const [boardId, setBoardId] = useState(ssrBoardId ?? -1)
+  const utils = trpc.useContext()
   const { data, isLoading } = trpc.useQuery(
     ['board.get-board-tasks', { boardId }],
     {
@@ -42,13 +45,20 @@ function BoardProvider({ children, boardId: ssrBoardId }: BoardProviderProps) {
     setBoardId(-1)
   }
 
+  function invalidateBoard() {
+    if (boardId !== -1) {
+      utils.invalidateQueries(['board.get-board-tasks', { boardId }])
+    }
+  }
+
   return (
     <BoardContext.Provider
       value={{
         board: data?.board ?? null,
         isLoading,
         selectBoard,
-        removeBoard
+        removeBoard,
+        invalidateBoard
       }}
     >
       {children}
