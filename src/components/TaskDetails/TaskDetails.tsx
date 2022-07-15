@@ -5,19 +5,39 @@ import { Skeleton } from 'components/Skeleton'
 import { Subtasks } from 'components/Subtasks'
 import { TaskOptions } from 'components/TaskOptions'
 import { useBoard } from 'hooks'
+import { Select } from 'components/Select'
+import { useState } from 'react'
 
 type TaskDetailsProps = {
   taskId: number
 }
 
 export const TaskDetails = NiceModal.create<TaskDetailsProps>(({ taskId }) => {
+  const [updatedColumnId, setUpdatedColumnId] = useState<number | null>(null)
   const modal = useModal()
-  const { invalidateBoard } = useBoard()
+  const { invalidateBoard, board } = useBoard()
   const { data, isLoading } = trpc.useQuery(['task.get-task', { taskId }])
+  const mutation = trpc.useMutation(['task.update-task-column'], {
+    onSuccess: () => {
+      invalidateBoard()
+    }
+  })
 
   function onClose() {
-    invalidateBoard()
+    if (updatedColumnId && updatedColumnId !== data?.task?.columnId) {
+      mutation.mutate({
+        taskId,
+        columnId: updatedColumnId
+      })
+    } else {
+      invalidateBoard()
+    }
+
     modal.hide()
+  }
+
+  function handleChangeStatus({ id }: { id: number }) {
+    setUpdatedColumnId(id)
   }
 
   return (
@@ -55,6 +75,16 @@ export const TaskDetails = NiceModal.create<TaskDetailsProps>(({ taskId }) => {
 
       {data?.task?.subtasks.length && (
         <Subtasks taskId={data.task.id} subtasks={data.task.subtasks} />
+      )}
+
+      {board && data?.task?.column && (
+        <Select
+          label='Current Status'
+          options={board.columns}
+          defaultOption={data.task.column}
+          onChange={handleChangeStatus}
+          className='mt-6'
+        />
       )}
     </Modal>
   )

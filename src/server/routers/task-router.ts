@@ -30,6 +30,18 @@ export const taskRouter = createRouter()
       return { task }
     }
   })
+  .mutation('update-task-column', {
+    input: z.object({
+      taskId: z.number(),
+      columnId: z.number()
+    }),
+    async resolve({ ctx, input }) {
+      await ctx.prisma.task.update({
+        where: { id: input.taskId },
+        data: { columnId: input.columnId }
+      })
+    }
+  })
   .mutation('update-task', {
     input: z.object({
       taskId: z.number(),

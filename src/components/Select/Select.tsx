@@ -3,15 +3,29 @@ import Image from 'next/image'
 import { Fragment, useEffect, useState } from 'react'
 import { classNames } from 'utils/styles/class-names'
 
-type SelectProps = {
-  label: string
-  options: { id: number; name: string }[]
-  className?: string
-  onChange: (option: { id: number; name: string }) => void
+type Option = {
+  id: number
+  name: string
 }
 
-export function Select({ label, options, className, onChange }: SelectProps) {
-  const [selectedOption, setSelectedOption] = useState(options[0])
+type SelectProps = {
+  label: string
+  defaultOption?: Option
+  options: Option[]
+  className?: string
+  onChange: (option: Option) => void
+}
+
+export function Select({
+  label,
+  options,
+  defaultOption,
+  className,
+  onChange
+}: SelectProps) {
+  const [selectedOption, setSelectedOption] = useState(
+    defaultOption ?? options[0]
+  )
 
   useEffect(() => {
     onChange(selectedOption)

@@ -12,9 +12,9 @@ import { BoardProvider, SidebarProvider } from 'hooks'
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute='class' defaultTheme='dark'>
-      <NiceModal.Provider>
-        <SidebarProvider>
-          <BoardProvider boardId={pageProps.boardId}>
+      <BoardProvider boardId={pageProps.boardId}>
+        <NiceModal.Provider>
+          <SidebarProvider>
             <Toaster position='top-right' />
             <Head>
               <title>Kanban Task Management</title>
@@ -29,9 +29,9 @@ function MyApp({ Component, pageProps }: AppProps) {
               />
             </Head>
             <Component {...pageProps} />
-          </BoardProvider>
-        </SidebarProvider>
-      </NiceModal.Provider>
+          </SidebarProvider>
+        </NiceModal.Provider>
+      </BoardProvider>
     </ThemeProvider>
   )
 }
