@@ -5,11 +5,12 @@ import { Button } from 'components/Button'
 type DeleteModalProps = {
   content: string
   isLoading?: boolean
+  title: string
   onDelete: () => void
 }
 
 export const DeleteModal = NiceModal.create<DeleteModalProps>(
-  ({ content, onDelete, isLoading = false }) => {
+  ({ content, onDelete, title, isLoading = false }) => {
     const modal = useModal()
 
     function onClose() {
@@ -20,7 +21,7 @@ export const DeleteModal = NiceModal.create<DeleteModalProps>(
       <Modal
         isOpen={modal.visible}
         onClose={onClose}
-        title='Delete this board?'
+        title={title}
         titleClassNames='text-red-500'
       >
         <p className='text-gray-300 font-medium text-body-lg'>{content}</p>

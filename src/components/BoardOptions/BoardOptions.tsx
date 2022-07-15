@@ -108,6 +108,7 @@ export function BoardOptions() {
 
       <EditBoardModal id={EDIT_BOARD_MODAL_ID} />
       <DeleteModal
+        title='Delete this board?'
         id={DELETE_BOARD_MODAL_ID}
         isLoading={mutation.isLoading}
         content={`Are you sure you want to delete the '${board?.name}' board? This action will remove all columns and tasks and cannot be reversed.`}

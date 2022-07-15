@@ -34,9 +34,16 @@ export const TaskDetails = NiceModal.create<TaskDetailsProps>(({ taskId }) => {
         </Skeleton>
       )}
 
-      <div className='absolute top-6 right-8'>
-        <TaskOptions isLoading={isLoading} />
-      </div>
+      {data?.task && (
+        <div className='absolute top-6 right-8'>
+          <TaskOptions
+            isLoading={isLoading}
+            taskId={data.task.id}
+            taskTitle={data.task.title}
+            onDeleteTask={onClose}
+          />
+        </div>
+      )}
 
       {(!data || data.task === null) && !isLoading && <p>Unable to fetch</p>}
 

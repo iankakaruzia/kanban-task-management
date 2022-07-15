@@ -1,13 +1,51 @@
 import { Menu, Transition } from '@headlessui/react'
+import { DeleteModal } from 'components/DeleteModal'
+import NiceModal from '@ebay/nice-modal-react'
+import toast from 'react-hot-toast'
+import { trpc } from 'lib/trpc'
 import Image from 'next/image'
 import { Fragment } from 'react'
+import { DELETE_BOARD_MODAL_ID } from 'utils/constants/modal-ids'
 import { classNames } from 'utils/styles/class-names'
 
 type TaskOptionsProps = {
   isLoading: boolean
+  taskId: number
+  taskTitle: string
+  onDeleteTask: () => void
 }
 
-export function TaskOptions({ isLoading }: TaskOptionsProps) {
+export function TaskOptions({
+  isLoading,
+  taskId,
+  taskTitle,
+  onDeleteTask
+}: TaskOptionsProps) {
+  const utils = trpc.useContext()
+  const mutation = trpc.useMutation('task.delete-task', {
+    onSuccess: () => {
+      utils.cancelQuery(['task.get-task', { taskId }])
+
+      NiceModal.hide(DELETE_BOARD_MODAL_ID)
+      onDeleteTask()
+    }
+  })
+
+  function showDeleteBoardModal() {
+    NiceModal.show(DELETE_BOARD_MODAL_ID)
+  }
+
+  function onDelete() {
+    mutation.mutate(
+      { taskId },
+      {
+        onSuccess: () => {
+          toast.success('Task deleted successfully')
+        }
+      }
+    )
+  }
+
   return (
     <>
       <Menu as='div' className='relative inline-block text-left'>
@@ -49,6 +87,7 @@ export function TaskOptions({ isLoading }: TaskOptionsProps) {
             <Menu.Item>
               {({ active }: { active: boolean }) => (
                 <button
+                  onClick={showDeleteBoardModal}
                   className={classNames(
                     'font-medium text-body-lg text-red-500',
                     active && 'ring-2 ring-red-500'
@@ -61,6 +100,14 @@ export function TaskOptions({ isLoading }: TaskOptionsProps) {
           </Menu.Items>
         </Transition>
       </Menu>
+
+      <DeleteModal
+        title='Delete this task?'
+        id={DELETE_BOARD_MODAL_ID}
+        isLoading={mutation.isLoading}
+        content={`Are you sure you want to delete the '${taskTitle}' task and its subtasks? This action cannot be reversed.`}
+        onDelete={onDelete}
+      />
     </>
   )
 }
