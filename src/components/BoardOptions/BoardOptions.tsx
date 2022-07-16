@@ -82,7 +82,7 @@ export function BoardOptions() {
                   onClick={showEditBoardFormModal}
                   className={classNames(
                     'mb-4 font-medium text-body-lg text-gray-300',
-                    active && 'ring-2 ring-gray-600 dark:ring-white'
+                    active && 'text-opacity-80'
                   )}
                 >
                   Edit Board
@@ -95,7 +95,7 @@ export function BoardOptions() {
                   onClick={showDeleteBoardModal}
                   className={classNames(
                     'font-medium text-body-lg text-red-500',
-                    active && 'ring-2 ring-red-500'
+                    active && 'text-opacity-80'
                   )}
                 >
                   Delete Board
