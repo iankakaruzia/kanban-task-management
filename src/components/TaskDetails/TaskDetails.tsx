@@ -50,7 +50,21 @@ export const TaskDetails = NiceModal.create<TaskDetailsProps>(({ taskId }) => {
     >
       {isLoading && (
         <Skeleton>
-          <Skeleton.Line className='w-40 h-6' />
+          <div className='flex flex-col w-full gap-2'>
+            <Skeleton.Line className='w-full h-4' />
+            <Skeleton.Line className='w-full h-4' />
+            <Skeleton.Line className='w-60 h-4' />
+          </div>
+
+          <div className='mt-6 flex flex-col w-full gap-2'>
+            <Skeleton.Line className='w-24 h-4' />
+            <Skeleton.Line className='w-full h-10' />
+          </div>
+
+          <div className='mt-6 flex flex-col w-full gap-2'>
+            <Skeleton.Line className='w-24 h-4' />
+            <Skeleton.Line className='w-full h-10' />
+          </div>
         </Skeleton>
       )}
 

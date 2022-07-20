@@ -6,7 +6,7 @@ type SkeletonProps = {
 }
 
 export function Skeleton({ children }: SkeletonProps) {
-  return <div className='flex animate-pulse w-full'>{children}</div>
+  return <div className='flex flex-col animate-pulse w-full'>{children}</div>
 }
 
 type SkeletonLineProps = {
